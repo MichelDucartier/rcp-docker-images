@@ -97,6 +97,18 @@ From the Kubernetes menu, we can see the IC and the RCP Cluster. We will enter t
 
 # WSL VSCode Connection
 
+For WSL setup, you will need [`kubernetes`](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) on your Windows host because VSCode is going to look for it on the host (and not in WSL). To check that Kubernetes is correctly installed, on a Windows terminal enter the following command:
+```sh
+kubectl
+```
+On Windows, create a folder `~/.kube` and create a file `config` in this directory. Copy the [kubeconfig.yaml from the EPFML Getting started tutorial](https://github.com/epfml/getting-started/blob/main/kubeconfig.yaml) into the `config` file that you have created. 
+
+> Note: You may already have this file in WSL from a previous installation in `~/.kube/config`. In this case you can juste enter the command `cp ~/.kube/config /mnt/c/Users/YOUR_USERNAME/.kube/config` in WSL
+
+Then open VSCode from WSL (by entering `code` from a WSL terminal). Install this [VSCode extension](https://marketplace.visualstudio.com/items?itemName=mtsmfm.vscode-k8s-quick-attach) (in WSL). Go to View -> Command Palette (or `Ctrl+Shift+P`), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/homes/$GASPAR.
+
+> Note: If you want to know why you can't directly use the Kubernetes extension with the WSL setup, see this [GitHub issue](https://github.com/microsoft/vscode-remote-release/issues/5849)
+
 # More resources
 
 - EPFL RCP [Wiki](https://wiki.rcp.epfl.ch/en/home/CaaS)
