@@ -1,0 +1,11 @@
+hydra-core
+tqdm
+wandb
+transformers
+tokenizers
+datasets
+evaluate
+datasets
+accelerate
+peft
+trl

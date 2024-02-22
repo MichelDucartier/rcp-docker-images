@@ -70,8 +70,9 @@ We will start the containers in the RCP cluster using the RUNAI CLI. Below is an
 runai submit \
   --name meditron-basic \
   --interactive \
-  --image registry.rcp.epfl.ch/meditron-ddx/solergib/basic:run-latest-solergib \
+  --image registry.rcp.epfl.ch/meditron-ddx/basic:latest-solergib \
   --pvc runai-mlo-solergib-scratch:/mloscratch \
+  --gpu 1 \
   -e NAS_HOME=/mloscratch/homes/solergib \
   -e WANDB_API_KEY_FILE_AT=/mloscratch/homes/solergib/keys/wandb_key.txt \
   -e HF_API_KEY_FILE_AT=/mloscratch/homes/solergib/keys/hf_key.txt \
@@ -105,7 +106,7 @@ On Windows, create a folder `~/.kube` and create a file `config` in this directo
 
 > Note: You may already have this file in WSL from a previous installation in `~/.kube/config`. In this case you can juste enter the command `cp ~/.kube/config /mnt/c/Users/YOUR_USERNAME/.kube/config` in WSL
 
-Then open VSCode from WSL (by entering `code` from a WSL terminal). Install this [VSCode extension](https://marketplace.visualstudio.com/items?itemName=mtsmfm.vscode-k8s-quick-attach) (in WSL). Go to View -> Command Palette (or `Ctrl+Shift+P`), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/homes/$GASPAR.
+Then open VSCode from WSL (by entering `code` from a WSL terminal). Install this [VSCode extension](https://marketplace.visualstudio.com/items?itemName=mtsmfm.vscode-k8s-quick-attach) (in WSL). Go to View -> Command Palette (or `Ctrl+Shift+P`), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/homes/$GASPAR_USER.
 
 > Note: If you want to know why you can't directly use the Kubernetes extension with the WSL setup, see this [GitHub issue](https://github.com/microsoft/vscode-remote-release/issues/5849)
 
