@@ -144,3 +144,4 @@ outputs/*
 
 wandb
 installation/docker-amd64-cuda/.env
+installation/docker-amd64-cuda/ALL.sh
