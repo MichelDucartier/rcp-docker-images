@@ -109,7 +109,18 @@ Then open VSCode from WSL (by entering `code` from a WSL terminal). Install this
 
 > Note: If you want to know why you can't directly use the Kubernetes extension with the WSL setup, see this [GitHub issue](https://github.com/microsoft/vscode-remote-release/issues/5849)
 
-**Troubleshooting:** If you see the message `client_secret_basic client authentication method requires a client_secret` from VSCode when you try select `rcp-context` then you must enter the `runai login` command again and copy the `~/.kube/config` file to Windows again (as above).
+**Troubleshooting:** You may see the message `client_secret_basic client authentication method requires a client_secret` from VSCode when you try select `rcp-context`:
+
+<img src="img/wsl_auth_issue.gif" />
+
+In this case, you must enter the 
+```sh
+runai login
+``` 
+command again in WSL and copy the `~/.kube/config` file from WSL to Windows again (as above) using (in WSL):
+```sh
+cp ~/.kube/config /mnt/c/Users/YOUR_USERNAME/.kube/config
+```
 
 > Note: This is because Kubernetes uses [OpenID connecter](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens). `runai login` generates a *temporary* `id_token` which expire after 1 hour (used for authentification). This token is stored in the `config` file (when you do `runai login`) and will be invalid after 1 hour. The `refresh_token` (also stored in the `config` file) is supposed to refresh the `id_token` but it doesn't work on WSL for some reason...
 
