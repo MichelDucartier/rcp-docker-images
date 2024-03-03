@@ -114,16 +114,13 @@ Then open VSCode from WSL (by entering `code` from a WSL terminal). Install this
 
 <img src="img/wsl_auth_issue.gif" />
 
-In this case, you must enter the 
-```sh
-runai login
-``` 
-command again in WSL and copy the `~/.kube/config` file from WSL to Windows again (as above) using (in WSL):
+
+After running the shell script to connect to the cluster, you must copy the `~/.kube/config` file from WSL to Windows again (as above) using (in WSL):
 ```sh
 cp ~/.kube/config /mnt/c/Users/YOUR_USERNAME/.kube/config
 ```
 
-> Note: This is because Kubernetes uses [OpenID connecter](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens). `runai login` generates a *temporary* `id_token` which expire after 1 hour (used for authentification). This token is stored in the `config` file (when you do `runai login`) and will be invalid after 1 hour. The `refresh_token` (also stored in the `config` file) is supposed to refresh the `id_token` but it doesn't work on WSL for some reason...
+> Note: This is because Kubernetes uses [OpenID connecter](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens). `runai login` generates a *temporary* `id_token` which expire after 1 hour (used for authentification). This token is stored in the `config` file (when you do `runai login`) and will be invalid after 1 hour. The `refresh_token` (also stored in the `config` file) refreshes the `id_token` but the `id_token` stored on Windows also need to be refreshed (thus we must copy the config to Windows again).
 
 # More resources
 
