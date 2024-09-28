@@ -16,10 +16,11 @@ services:
     extends:
         service: image-root
     image: ${IMAGE_NAME}:latest-training
-    dockerfile: Dockerfile-training
+    build:
+      dockerfile: Dockerfile-training
       target: training-image
-    args:
-      GENERIC_IMAGE: ${IMAGE_NAME}
+      args:
+        GENERIC_IMAGE: ${IMAGE_NAME}
   image-user:
     extends:
       service: image-root
