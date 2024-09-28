@@ -12,5 +12,5 @@ ARG GENERIC_IMAGE
 FROM ${GENERIC_IMAGE}:latest-root AS training-image
 
 # Add user to sudoer to be able to install apt packages.
-pip install -r requirements.txt
+RUN pip install -r requirements.txt
 
