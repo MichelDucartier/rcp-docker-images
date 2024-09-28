@@ -131,6 +131,19 @@ build_user() {
   fi
 }
 
+build_training() {
+  # Build the user runtime and dev images and tag them with the current git commit.
+  check
+  docker compose -p "${COMPOSE_PROJECT}" build image-training
+
+  # If the generic image has the current git tag, then the user image has been build from that tag.
+  GIT_COMMIT=$(git rev-parse --short HEAD)
+  if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
+   grep -c "${GIT_COMMIT}") -ge 1 ]]; then
+    docker tag "${IMAGE_NAME}:latest-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
+  fi
+}
+
 build() {
   build_generic
   build_user

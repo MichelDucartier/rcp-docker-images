@@ -12,7 +12,14 @@ services:
       target: runtime-generic
       args:
         PROJECT_NAME: ${PROJECT_NAME}
-
+  image-training:
+    extends:
+        service: image-root
+    image: ${IMAGE_NAME}:latest-training
+    dockerfile: Dockerfile-training
+      target: training-image
+    args:
+      GENERIC_IMAGE: ${IMAGE_NAME}
   image-user:
     extends:
       service: image-root
