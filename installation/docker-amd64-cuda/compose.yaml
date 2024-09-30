@@ -14,7 +14,7 @@ services:
         PROJECT_NAME: ${PROJECT_NAME}
   image-training:
     extends:
-        service: image-root
+        service: image-user
     image: ${IMAGE_NAME}:latest-training
     build:
       dockerfile: Dockerfile-training
