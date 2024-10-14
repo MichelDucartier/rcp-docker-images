@@ -151,6 +151,8 @@ RUN sudo apt install gh -y
 # Copy build artifacts and software.
 # You can use this stage to test the python env and other build artifacts.
 
+FROM runtime-apt-pkgs AS runtime-deps
+
 # Optional optimizations.
 # Enable Intel MKL optimizations on AMD CPUs.
 # https://danieldk.eu/Posts/2020-08-31-MKL-Zen.html
