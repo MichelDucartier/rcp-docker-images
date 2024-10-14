@@ -144,6 +144,16 @@ build_training() {
   fi
 }
 
+build_vllm() {
+  # Build the generic runtime and dev images and tag them with the current git commit.
+  check
+  docker compose -p "${COMPOSE_PROJECT}" build image-vllm
+
+  # Tag the images with the current git commit.
+  GIT_COMMIT=$(git rev-parse --short HEAD)
+  docker tag "${IMAGE_NAME}:latest-vllm-root" "${IMAGE_NAME}:${GIT_COMMIT}-vllm-root"
+}
+
 build() {
   build_generic
   build_user

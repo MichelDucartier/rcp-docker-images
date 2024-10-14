@@ -12,6 +12,19 @@ services:
       target: runtime-generic
       args:
         PROJECT_NAME: ${PROJECT_NAME}
+  image-vllm:
+    extends:
+      file: compose-base.yaml
+      service: args-run-vllm
+    image: ${IMAGE_NAME}:latest-root
+    build:
+      platforms:
+        - "linux/amd64"
+      context: .
+      dockerfile: Dockerfile-vllm
+      target: runtime-generic
+      args:
+        PROJECT_NAME: ${PROJECT_NAME}
   image-training:
     extends:
         service: image-user
