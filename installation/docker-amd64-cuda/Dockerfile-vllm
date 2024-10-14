@@ -252,8 +252,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=private \
 
 COPY dependencies/apt-dev.txt ${DEPENDENCIES_DIR}/apt-dev.txt
 
-RUN apt-get install portaudio19-dev \
-    ffmpeg \
+RUN apt-get update; \
+    apt-get install portaudio19-dev ffmpeg \
 
 RUN pip install --upgrade google-cloud-speech google-cloud-texttospeech openai uvicorn fastapi pyaudio wave llmcompressor
 
