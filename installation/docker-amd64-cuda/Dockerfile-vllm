@@ -1,26 +1,5 @@
 # All user-specific configurations are here.
 
-## For building:
-ARG GRPID=75545
-ARG USRID=204162
-ARG GRP=runai-mlo_AppGrpU
-# USR is used in the image name and must be lowercase.
-# It's fine if your username is not lowercase, jut make it lowercase.
-ARG USR=sallinen
-# PASSWD is not secret,
-# it is only there to avoid running password-less sudo commands accidentally.
-ARG PASSWD=sallinen
-# LAB_NAME will be the first component in the image path.
-# It must be lowercase.
-ARG LAB_NAME=multimeditron
-
-## For running locally
-# You can find the acceleration options in the compose.yaml file
-# by looking at the services with names dev-local-ACCELERATION.
-ARG PROJECT_ROOT_AT=/project/transformers-in-rcp
-ARG ACCELERATION=cpu
-ARG WANDB_API_KEY=""
-
 ####################
 # Project-specific environment variables.
 ## Used to avoid writing paths multiple times and creating inconsistencies.
@@ -260,6 +239,29 @@ RUN pip install --upgrade google-cloud-speech google-cloud-texttospeech openai u
 ENV PASSWD=${PASSWD}
 
 # Add user to sudoer to be able to install apt packages.
+ARG GRPID=75545
+ARG USRID=204162
+ARG GRP=runai-mlo_AppGrpU
+
+## For building:
+# USR is used in the image name and must be lowercase.
+# It's fine if your username is not lowercase, jut make it lowercase.
+ARG USR=sallinen
+# PASSWD is not secret,
+# it is only there to avoid running password-less sudo commands accidentally.
+ARG PASSWD=sallinen
+# LAB_NAME will be the first component in the image path.
+# It must be lowercase.
+ARG LAB_NAME=multimeditron
+
+## For running locally
+# You can find the acceleration options in the compose.yaml file
+# by looking at the services with names dev-local-ACCELERATION.
+ARG PROJECT_ROOT_AT=/project/transformers-in-rcp
+ARG ACCELERATION=cpu
+ARG WANDB_API_KEY=""
+
+
 RUN echo "GRPID=${GRPID}, GRP=${GRP}"
 RUN groupadd -f -g ${GRPID} ${GRP} && \
     useradd --shell /bin/zsh --create-home -u ${USRID} -g ${GRP} -p  $(openssl passwd -1 ${PASSWD}) ${USR} && \
