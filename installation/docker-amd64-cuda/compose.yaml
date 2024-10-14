@@ -16,7 +16,7 @@ services:
     extends:
       file: compose-base.yaml
       service: args-run-vllm
-    image: ${IMAGE_NAME}:latest-root
+    image: ${IMAGE_NAME}:latest-vllm-root
     build:
       platforms:
         - "linux/amd64"
