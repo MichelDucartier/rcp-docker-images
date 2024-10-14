@@ -1,11 +1,45 @@
+# All user-specific configurations are here.
+
+## For building:
+ARG GRPID=75545
+ARG USRID=204162
+ARG GRP=runai-mlo_AppGrpU
+# USR is used in the image name and must be lowercase.
+# It's fine if your username is not lowercase, jut make it lowercase.
+ARG USR=sallinen
+# PASSWD is not secret,
+# it is only there to avoid running password-less sudo commands accidentally.
+ARG PASSWD=sallinen
+# LAB_NAME will be the first component in the image path.
+# It must be lowercase.
+ARG LAB_NAME=multimeditron
+
+## For running locally
+# You can find the acceleration options in the compose.yaml file
+# by looking at the services with names dev-local-ACCELERATION.
+ARG PROJECT_ROOT_AT=/project/transformers-in-rcp
+ARG ACCELERATION=cpu
+ARG WANDB_API_KEY=""
+
+####################
+# Project-specific environment variables.
+## Used to avoid writing paths multiple times and creating inconsistencies.
+## You should not need to change anything below this line.
+ARG PROJECT_NAME=transformers-in-rcp
+ARG PACKAGE_NAME=template_package_name
+ARG IMAGE_NAME=${LAB_NAME}/basic
+# The image name also includes the USR
+# to avoid conflicts between users using the same build machine
+# Or sharing repositories. (Duplicate images with different names will still be stored only once.)
+
 # syntax = docker/dockerfile:1
 
 # BASE_IMAGE is the image that will be extended by this Dockerfile.
 # It is assumed to a well configured Python installation.
 # The reminaing packages will be installed with pip.
 
-ARG BASE_IMAGE
-ARG GIT_IMAGE
+ARG BASE_IMAGE=vllm/vllm-openai
+ARG GIT_IMAGE=alpine/git:2.40.1
 
 ########################################################################
 # 1. Stages for downloading, installing, and building things.
@@ -25,11 +59,12 @@ RUN git clone --depth 1 ${ZSHA_URL} /opt/zsh/zsh-autosuggestions
 RUN git clone --depth 1 ${ZSHS_URL} /opt/zsh/zsh-syntax-highlighting
 
 
+
 ########################################################################
 # Install missing apt build packages.
 ## This stage can be reused to build other software.
 
-FROM ${BASE_IMAGE} AS build-apt-packages
+FROM --platform=linux/arm64 ${BASE_IMAGE} AS build-apt-packages
 
 # Enable caching for `apt` packages in Docker.
 # https://docs.docker.com/engine/reference/builder/#run---mounttypecache
@@ -236,3 +271,13 @@ RUN apt-get install portaudio19-dev \
     ffmpeg \
 
 RUN pip install --upgrade google-cloud-speech google-cloud-texttospeech openai uvicorn fastapi pyaudio wave llmcompressor
+
+ENV PASSWD=${PASSWD}
+
+# Add user to sudoer to be able to install apt packages.
+RUN groupadd -f -g ${GRPID} ${GRP} && \
+    useradd --shell /bin/zsh --create-home -u ${USRID} -g ${GRP} -p  $(openssl passwd -1 ${PASSWD}) ${USR} && \
+    usermod -aG sudo ${USR}
+
+USER ${USR}
+RUN touch /home/${USR}/.zshrc
