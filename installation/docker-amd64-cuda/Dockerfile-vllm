@@ -151,23 +151,6 @@ RUN sudo apt install gh -y
 # Copy build artifacts and software.
 # You can use this stage to test the python env and other build artifacts.
 
-FROM runtime-apt-pkgs AS runtime-deps
-
-# A directory to record all the dependency files used at multiple stages.
-# This is useful for a later inspection or debugging.
-ENV DEPENDENCIES_DIR=/opt/template-dependencies
-RUN mkdir -m 777 ${DEPENDENCIES_DIR}
-COPY dependencies/apt-build.txt ${DEPENDENCIES_DIR}/apt-build.txt
-COPY dependencies/apt-runtime.txt ${DEPENDENCIES_DIR}/apt-runtime.txt
-COPY dependencies/requirements.txt ${DEPENDENCIES_DIR}/requirements.txt
-
-# Install pip packages.
-ARG PIP_REQS_FILE=/tmp/dependencies/requirements.txt
-COPY --link dependencies/requirements.txt ${PIP_REQS_FILE}
-RUN pip freeze > ${DEPENDENCIES_DIR}/requirements-raw-before-pip-install-r.txt
-RUN pip install -r ${PIP_REQS_FILE}
-RUN pip freeze > ${DEPENDENCIES_DIR}/requirements-raw-after-pip-install-r.txt
-
 # Optional optimizations.
 # Enable Intel MKL optimizations on AMD CPUs.
 # https://danieldk.eu/Posts/2020-08-31-MKL-Zen.html
