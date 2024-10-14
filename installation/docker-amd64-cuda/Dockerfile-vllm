@@ -64,7 +64,7 @@ RUN git clone --depth 1 ${ZSHS_URL} /opt/zsh/zsh-syntax-highlighting
 # Install missing apt build packages.
 ## This stage can be reused to build other software.
 
-FROM --platform=linux/arm64 ${BASE_IMAGE} AS build-apt-packages
+FROM ${BASE_IMAGE} AS build-apt-packages
 
 # Enable caching for `apt` packages in Docker.
 # https://docs.docker.com/engine/reference/builder/#run---mounttypecache
