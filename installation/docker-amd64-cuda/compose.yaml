@@ -34,6 +34,15 @@ services:
       target: training-image
       args:
         GENERIC_IMAGE: ${IMAGE_NAME}
+  image-end2end:
+    extends:
+        service: image-user
+    image: ${IMAGE_NAME}:latest-end2end
+    build:
+      dockerfile: Dockerfile-end2end
+      target: end2end-image
+      args:
+        GENERIC_IMAGE: ${IMAGE_NAME}
   image-user:
     extends:
       service: image-root

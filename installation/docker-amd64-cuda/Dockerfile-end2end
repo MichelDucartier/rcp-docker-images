@@ -1,0 +1,18 @@
+########################################################################
+# 3. Stages for setting up the user and the development environment.
+########################################################################
+
+ARG GENERIC_IMAGE
+
+########################################################################
+# Final runtime layer for the user.
+# Explicitly create a user for Docker Engine interfaces
+# which do no support selecting the user at runtime; this is the case for Run:ai.
+
+FROM ${GENERIC_IMAGE}:latest-kaldjzic AS endr2end-image
+
+# Add user to sudoer to be able to install apt packages.
+RUN sudo apt-get update
+RUN sudo apt install -y rabbitmq-server
+RUN sudo apt install -y systemctl
+RUN sudo DEBIAN_FRONTEND=noninteractive apt install -y celery
