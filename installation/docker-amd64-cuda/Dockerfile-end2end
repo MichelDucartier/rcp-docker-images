@@ -9,7 +9,7 @@ ARG GENERIC_IMAGE
 # Explicitly create a user for Docker Engine interfaces
 # which do no support selecting the user at runtime; this is the case for Run:ai.
 
-FROM ${GENERIC_IMAGE}:latest-kalajdzi AS endr2end-image
+FROM ${GENERIC_IMAGE}:latest-kalajdzi AS end2end-image
 
 # Add user to sudoer to be able to install apt packages.
 RUN sudo apt-get update
