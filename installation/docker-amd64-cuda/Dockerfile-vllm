@@ -240,16 +240,16 @@ ENV PASSWD=${PASSWD}
 
 # Add user to sudoer to be able to install apt packages.
 ARG GRPID=75545
-ARG USRID=204162
+ARG USRID=203383
 ARG GRP=runai-mlo_AppGrpU
 
 ## For building:
 # USR is used in the image name and must be lowercase.
 # It's fine if your username is not lowercase, jut make it lowercase.
-ARG USR=sallinen
+ARG USR=bbernath
 # PASSWD is not secret,
 # it is only there to avoid running password-less sudo commands accidentally.
-ARG PASSWD=sallinen
+ARG PASSWD=bbernath
 # LAB_NAME will be the first component in the image path.
 # It must be lowercase.
 ARG LAB_NAME=multimeditron
