@@ -118,6 +118,19 @@ build_generic() {
   docker tag "${IMAGE_NAME}:latest-root" "${IMAGE_NAME}:${GIT_COMMIT}-root"
 }
 
+build_vllm_user() {
+  # Build the user runtime and dev images and tag them with the current git commit.
+  check
+  docker compose -p "${COMPOSE_PROJECT}" build image-vllm-user
+
+  # If the generic image has the current git tag, then the user image has been build from that tag.
+  GIT_COMMIT=$(git rev-parse --short HEAD)
+  if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
+   grep -c "${GIT_COMMIT}") -ge 1 ]]; then
+    docker tag "${IMAGE_NAME}:latest-vllm-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
+  fi
+}
+
 build_user() {
   # Build the user runtime and dev images and tag them with the current git commit.
   check

@@ -57,6 +57,21 @@ services:
         GRP: ${GRP}
         USR: ${USR}
         PASSWD: ${PASSWD}
+  image-vllm-user:
+    extends:
+      service: image-vllm
+    image: ${IMAGE_NAME}:latest-vllm-${USR}
+    build:
+      dockerfile: Dockerfile-user
+      target: runtime-user
+      args:
+        GENERIC_IMAGE: ${IMAGE_NAME}
+        GRPID: ${GRPID}
+        USRID: ${USRID}
+        GRP: ${GRP}
+        USR: ${USR}
+        PASSWD: ${PASSWD}
+
 
   # TODO: Edit for local cuda gpu images
 
