@@ -62,7 +62,7 @@ services:
       service: image-vllm
     image: ${IMAGE_NAME}:latest-vllm-${USR}
     build:
-      dockerfile: Dockerfile-user
+      dockerfile: Dockerfile-vllm-user
       target: runtime-user
       args:
         GENERIC_IMAGE: ${IMAGE_NAME}
