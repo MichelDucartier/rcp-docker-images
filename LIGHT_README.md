@@ -94,7 +94,7 @@ runai delete job meditron-basic
 
 ```
 
-### Troubleshooting (TEMPORARY FIX)
+### Troubleshooting
 If you get the error 
 ```
 PVC 'mlo-scratch' does not exist in namespace 'runai-mlo-$GASPAR', please create it first
