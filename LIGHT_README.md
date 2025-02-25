@@ -271,7 +271,7 @@ Open VSCode. Install this extension: https://marketplace.visualstudio.com/items?
 To attach VSCode to your job:
 Go to View -> Command Palette (or Ctrl+Shift+P), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/homes/$GASPAR_USER.
 
-#### Troubleshooting
+#### VSCode Troubleshooting
 
 If you encounter the following error:
 <img src="img/wsl_auth_issue.gif" />
