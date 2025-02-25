@@ -28,7 +28,7 @@ mkdir ~/.kube/
 curl -o  ~/.kube/config https://raw.githubusercontent.com/epfml/getting-started/main/kubeconfig.yaml
 ```
 
-3. Install the run:ai CLI for RCP (two RCP clusters) and IC:
+3. Install the run:ai CLI for RCP (two RCP clusters):
 
 ```bash
 # Download the CLI from the link shown in the help section.
