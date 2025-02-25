@@ -42,7 +42,7 @@ sudo chown root: /usr/local/bin/runai
 
 ## 3. Login
 
-The RCP is organized into a [3 level hierarchy](https://wiki.rcp.epfl.ch/en/home/CaaS/FAQ/how-to-use-runai#access-hierarchy). The department is the laboratory (e.g. Light or MLO). The projects determine which scratch (aka persistent storage) we have access to <sup>[1](#myfootnote1)</sup>. Note that you should choose the SSO option when executing `runai login`.
+The RCP is organized into a [3 level hierarchy](https://wiki.rcp.epfl.ch/en/home/CaaS/FAQ/how-to-use-runai#access-hierarchy). The department is the laboratory (e.g. LIGHT or MLO). The projects determine which scratch (aka persistent storage) we have access to <sup>[1](#myfootnote1)</sup>. Note that you should choose the SSO option when executing `runai login`.
 
 
 ```bash
@@ -52,7 +52,7 @@ runai list project
 runai config project mlo-$GASPAR
 ```
 
-<a name="myfootnote1">1</a>: Before 25/02/2025, people should have access to the mloscratch (scratch shared between the MLO lab and Light lab) from the project `mlo-$GASPAR`. But, because of Light independence, people from Light might not have access to themloscratch anymore 
+<a name="myfootnote1">1</a>: Before 25/02/2025, people should have access to the mloscratch (scratch shared between the MLO lab and LIGHT lab) from the project `mlo-$GASPAR`. But, because of LIGHT independence, people from LIGHT might not have access to themloscratch anymore 
 
 
 ## 4. Launching a quick test job
