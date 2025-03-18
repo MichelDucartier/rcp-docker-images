@@ -16,7 +16,7 @@ ssh $GASPAR@haas001.rcp.epfl.ch
 
 Go in the scratch directory (`/mnt/mlo/scratch`):
 ```bash
-cd /mnt/mlo/scratch/homes
+cd /mnt/light/scratch/users
 mkdir $GASPAR
 ```
 
@@ -25,7 +25,7 @@ mkdir $GASPAR
 We will store the API keys within our directory in a folder that only our user will have access to. Both the wandb and Hugging Face API keys will be stored in a .txt file within this protected folder.
 
 ```bash
-cd /mnt/mlo/scratch/homes/$GASPAR_USER
+cd /mnt/light/scratch/users/$GASPAR_USER
 mkdir keys
 cd keys
 touch hf_key.txt
@@ -41,7 +41,7 @@ To carry out the automatic login to GitHub, we will need to store our git identi
 
 To do this, we will need to set the environment variable `$HOME` to the personal folder we have created and activate the credential helper that will store our access credentials.
 ```bash
-export HOME=/mnt/mlo/scratch/homes/$GASPAR_USER
+export HOME=/light/mlo/scratch/users/$GASPAR_USER
 git config --global credential.helper store
 ```
 
@@ -64,7 +64,7 @@ If you were able to clone the repo, then your setup is correct.
 
 We will store the configurations related to VSCode in a folder in the scratch volume so that we don't have to download them every time we start a new container.
 ```bash
-mkdir /mnt/mlo/scratch/homes/$GASPAR_USER/.vscode-server
+mkdir /mnt/light/scratch/users/$GASPAR_USER/.vscode-server
 ```
 
 
@@ -113,10 +113,8 @@ The RCP is organized into a [3 level hierarchy](https://wiki.rcp.epfl.ch/en/home
 runai config cluster rcp-caas
 runai login
 runai list project
-runai config project mlo-$GASPAR
+runai config project light-$GASPAR
 ```
-
-<a name="myfootnote1">1</a>: Before 25/02/2025, people should have access to the mloscratch (scratch shared between the MLO lab and LIGHT lab) from the project `mlo-$GASPAR`. But, because of LIGHT independence, people from LIGHT might not have access to themloscratch anymore 
 
 ## 5. Submit a job
 
@@ -126,14 +124,14 @@ Time to test if we can submit a job! This command will allocate 1 GPU from the c
 runai submit \
   --name meditron-basic \
   --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR\
-  --pvc mlo-scratch:/mloscratch \
+  --pvc light-scratch:/mloscratch \
   --large-shm \
-  -e NAS_HOME=/mloscratch/homes/$GASPAR \
-  -e HF_API_KEY_FILE_AT=/mloscratch/homes/$GASPAR/keys/hf_key.txt \
-  -e WANDB_API_KEY_FILE_AT=/mloscratch/homes/$GASPAR/keys/wandb_key.txt \
-  -e GITCONFIG_AT=/mloscratch/homes/$GASPAR/.gitconfig \
-  -e GIT_CREDENTIALS_AT=/mloscratch/homes/$GASPAR/.git-credentials \
-  -e VSCODE_CONFIG_AT=/mloscratch/homes/$GASPAR/.vscode-server \
+  -e NAS_HOME=/mloscratch/users/$GASPAR \
+  -e HF_API_KEY_FILE_AT=/mloscratch/users/$GASPAR/keys/hf_key.txt \
+  -e WANDB_API_KEY_FILE_AT=/mloscratch/users/$GASPAR/keys/wandb_key.txt \
+  -e GITCONFIG_AT=/mloscratch/users/$GASPAR/.gitconfig \
+  -e GIT_CREDENTIALS_AT=/mloscratch/users/$GASPAR/.git-credentials \
+  -e VSCODE_CONFIG_AT=/mloscratch/users/$GASPAR/.vscode-server \
   --backoff-limit 0 \
   --run-as-gid 83070 \
   --node-pool h100 \
@@ -144,7 +142,7 @@ runai submit \
 Explanation:
 * `name` is the name of the job
 * `image` is the link to the docker image that will be attached to the cluster
-* `pvc` determines which scratch will be mounted to the job. The argument is of the form: `name_of_the_scratch:/mount/path/to/scratch`. Here the we are mounting the scratch named `mlo-scratch` to the local path `/mloscratch` **This is part may cause an error because of the LIGHT migration** (see [Troubleshooting](#troubleshooting))
+* `pvc` determines which scratch will be mounted to the job. The argument is of the form: `name_of_the_scratch:/mount/path/to/scratch`. Here the we are mounting the scratch named `light-scratch` to the local path `/mloscratch` **This is part may cause an error because of the LIGHT migration** 
 * `gpu` is the number of GPU that you want to claim for this job (larger amount of GPU will be harder to get as ressources are limited)
 
 We can check the outputs of our container and the status of the job using the following commands respectively.
@@ -171,35 +169,6 @@ Once you are done, run the following command to delete the job:
 ```bash
 runai delete job meditron-basic
 ```
-
-### Troubleshooting
-If you get the error 
-```
-PVC 'mlo-scratch' does not exist in namespace 'runai-mlo-$GASPAR', please create it first
-```
-You can try the following:
-```bash
-runai config cluster rcp-caas
-runai login
-runai list project
-runai config project mlo-meditron-home-$GASPAR
-```
-and then:
-```bash
-runai submit \
-  --name meditron-basic \
-  --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR \
-  --pvc mlo-meditron-scratch:/mloscratch \
-  --large-shm \
-  -e NAS_HOME=/mloscratch/homes/$GASPAR \
-  --backoff-limit 0 \
-  --run-as-gid 83070 \
-  --node-pool h100 \
-  --gpu 1 \
-  -- sleep infinity
-```
-Notice that we changed the `pvc` name and the `project` name. This is a temporary fix! It will be patched some day in the future when Annie and Alexandre decide what to do. There will be a migration from `mloscratch` to `lightscratch`
-
 
 ## 6. VSCode connection
 
@@ -234,12 +203,12 @@ runai submit \
   --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR\
   --pvc mlo-scratch:/mloscratch \
   --large-shm \
-  -e NAS_HOME=/mloscratch/homes/$GASPAR \
-  -e HF_API_KEY_FILE_AT=/mloscratch/homes/$GASPAR/keys/hf_key.txt \
-  -e WANDB_API_KEY_FILE_AT=/mloscratch/homes/$GASPAR/keys/wandb_key.txt \
-  -e GITCONFIG_AT=/mloscratch/homes/$GASPAR/.gitconfig \
-  -e GIT_CREDENTIALS_AT=/mloscratch/homes/$GASPAR/.git-credentials \
-  -e VSCODE_CONFIG_AT=/mloscratch/homes/$GASPAR/.vscode-server \
+  -e NAS_HOME=/mloscratch/users/$GASPAR \
+  -e HF_API_KEY_FILE_AT=/mloscratch/users/$GASPAR/keys/hf_key.txt \
+  -e WANDB_API_KEY_FILE_AT=/mloscratch/users/$GASPAR/keys/wandb_key.txt \
+  -e GITCONFIG_AT=/mloscratch/users/$GASPAR/.gitconfig \
+  -e GIT_CREDENTIALS_AT=/mloscratch/users/$GASPAR/.git-credentials \
+  -e VSCODE_CONFIG_AT=/mloscratch/users/$GASPAR/.vscode-server \
   --backoff-limit 0 \
   --run-as-gid 83070 \
   --node-pool h100 \
@@ -252,7 +221,7 @@ cp ~/.kube/config /mnt/c/Users/$WINDOWS_USERNAME/.kube/config
 Open VSCode. Install this extension: https://marketplace.visualstudio.com/items?itemName=mtsmfm.vscode-k8s-quick-attach. 
 
 To attach VSCode to your job:
-Go to View -> Command Palette (or Ctrl+Shift+P), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/homes/$GASPAR_USER.
+Go to View -> Command Palette (or Ctrl+Shift+P), search for "k8s quick attach: Quick attach k8s Pod" -> rcp-context -> runai-mlo-GASPAR -> meditron-basic-0-0 -> /mloscratch/users/$GASPAR_USER.
 
 #### VSCode Troubleshooting
 
