@@ -201,7 +201,7 @@ Claim a job from WSL and copy the kube configuration file from WSL to Windows
 runai submit \
   --name meditron-basic \
   --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR\
-  --pvc mlo-scratch:/mloscratch \
+  --pvc light-scratch:/mloscratch \
   --large-shm \
   -e NAS_HOME=/mloscratch/users/$GASPAR \
   -e HF_API_KEY_FILE_AT=/mloscratch/users/$GASPAR/keys/hf_key.txt \
