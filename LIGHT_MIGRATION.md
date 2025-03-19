@@ -84,4 +84,4 @@ Check that you still have access to GPU:
 nvidia-smi
 ```
 
-
+Lastly, try to connect to the job using VSCode (the procedure is the same as before) 
