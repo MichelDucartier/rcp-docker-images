@@ -10,7 +10,8 @@ ARG GENERIC_IMAGE
 # which do no support selecting the user at runtime; this is the case for Run:ai.
 
 # FROM ${GENERIC_IMAGE}:latest-vllm-root AS runtime-user
-FROM ${GENERIC_IMAGE}:latest-vllm-miczhang as runtime-user
+# FROM ${GENERIC_IMAGE}:latest-vllm-miczhang as runtime-user
+FROM registry.rcp.epfl.ch/multimeditron/basic:latest-vllm-miczhang as runtime-user
 
 ARG GRPID
 ARG USRID
