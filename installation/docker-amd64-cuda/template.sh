@@ -127,7 +127,7 @@ build_vllm_user() {
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
    grep -c "${GIT_COMMIT}") -ge 1 ]]; then
-    docker tag "${IMAGE_NAME}:latest-vllm-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
+    docker tag "${IMAGE_NAME}:latest-vllm-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-vllm-${USR}"
   fi
 }
 
