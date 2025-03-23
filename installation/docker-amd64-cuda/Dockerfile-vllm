@@ -236,7 +236,7 @@ RUN apt-get update; \
 
 RUN pip install --upgrade google-cloud-speech google-cloud-texttospeech openai uvicorn fastapi pyaudio wave llmcompressor
 
-ENV PASSWD=${PASSWD}
+#ENV PASSWD=${PASSWD}
 
 # Add user to sudoer to be able to install apt packages.
 # ARG GRPID=75545

@@ -9,7 +9,8 @@ ARG GENERIC_IMAGE
 # Explicitly create a user for Docker Engine interfaces
 # which do no support selecting the user at runtime; this is the case for Run:ai.
 
-FROM ${GENERIC_IMAGE}:latest-vllm-root AS runtime-user
+# FROM ${GENERIC_IMAGE}:latest-vllm-root AS runtime-user
+FROM ${GENERIC_IMAGE}:latest-vllm-miczhang as runtime-user
 
 ARG GRPID
 ARG USRID
