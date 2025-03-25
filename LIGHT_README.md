@@ -133,7 +133,7 @@ runai submit \
   -e GIT_CREDENTIALS_AT=/mloscratch/users/$GASPAR/.git-credentials \
   -e VSCODE_CONFIG_AT=/mloscratch/users/$GASPAR/.vscode-server \
   --backoff-limit 0 \
-  --run-as-gid 83070 \
+  --run-as-gid 84257 \
   --node-pool h100 \
   --gpu 1 \
   -- sleep infinity
@@ -210,7 +210,7 @@ runai submit \
   -e GIT_CREDENTIALS_AT=/mloscratch/users/$GASPAR/.git-credentials \
   -e VSCODE_CONFIG_AT=/mloscratch/users/$GASPAR/.vscode-server \
   --backoff-limit 0 \
-  --run-as-gid 83070 \
+  --run-as-gid 84257 \
   --node-pool h100 \
   --gpu 1 \
   -- sleep infinity
