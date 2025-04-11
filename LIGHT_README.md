@@ -41,7 +41,7 @@ To carry out the automatic login to GitHub, we will need to store our git identi
 
 To do this, we will need to set the environment variable `$HOME` to the personal folder we have created and activate the credential helper that will store our access credentials.
 ```bash
-export HOME=/light/mlo/scratch/users/$GASPAR_USER
+export HOME=/mnt/light/scratch/users/$GASPAR_USER
 git config --global credential.helper store
 ```
 
