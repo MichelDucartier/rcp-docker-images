@@ -12,6 +12,7 @@ services:
       target: runtime-generic
       args:
         PROJECT_NAME: ${PROJECT_NAME}
+
   image-vllm:
     extends:
       file: compose-base.yaml
@@ -25,28 +26,23 @@ services:
       target: runtime-generic
       args:
         PROJECT_NAME: ${PROJECT_NAME}
+
   image-training:
     extends:
-        service: image-user
-    image: ${IMAGE_NAME}:latest-training
+      service: image-root
+    image: ${IMAGE_NAME}:latest-training-root
     build:
       dockerfile: Dockerfile-training
-      target: training-image
+      target: runtime-training
       args:
         GENERIC_IMAGE: ${IMAGE_NAME}
-  image-end2end:
-    extends:
-        service: image-user
-    image: ${IMAGE_NAME}:latest-end2end
-    build:
-      dockerfile: Dockerfile-end2end
-      target: end2end-image
-      args:
-        GENERIC_IMAGE: ${IMAGE_NAME}
+        GH_USERNAME: ${GH_USERNAME}
+        GH_TOKEN: ${GH_TOKEN}
+
   image-user:
     extends:
       service: image-root
-    image: ${IMAGE_NAME}:latest-${USR}
+    image: ${IMAGE_NAME}:latest-dpo-${USR}
     build:
       dockerfile: Dockerfile-user
       target: runtime-user
@@ -57,6 +53,17 @@ services:
         GRP: ${GRP}
         USR: ${USR}
         PASSWD: ${PASSWD}
+
+  image-end2end:
+    extends:
+        service: image-user
+    image: ${IMAGE_NAME}:latest-end2end
+    build:
+      dockerfile: Dockerfile-end2end
+      target: end2end-image
+      args:
+        GENERIC_IMAGE: ${IMAGE_NAME}
+  
   image-vllm-user:
     extends:
       service: image-vllm

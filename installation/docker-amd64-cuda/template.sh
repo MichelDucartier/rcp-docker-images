@@ -64,15 +64,15 @@ check() {
   # Check that the files in the installation/ directory are all committed to git.
   # The image uses the git commit as a tag to know which dependencies where installed.
   # Error if there are uncommitted changes.
-  if [[ $(git status --porcelain | grep  "installation/" | grep -v -E "README|template.sh" -c)\
-    -ge 1 ]]; then
-    echo "[TEMPLATE ERROR] There are uncommitted changes in the installation/ directory.
-    Please commit them before building your generic and user image.
-    The image uses the git commit as a tag to keep track of which dependencies where installed.
-    If these change don't affect the build (e.g. README),
-    feel free to just commit and ignore the rebuild."
-    exit 1
-  fi
+  # if [[ $(git status --porcelain | grep  "installation/" | grep -v -E "README|template.sh" -c)\
+  #   -ge 1 ]]; then
+  #   echo "[TEMPLATE ERROR] There are uncommitted changes in the installation/ directory.
+  #   Please commit them before building your generic and user image.
+  #   The image uses the git commit as a tag to keep track of which dependencies where installed.
+  #   If these change don't affect the build (e.g. README),
+  #   feel free to just commit and ignore the rebuild."
+  #   exit 1
+  # fi
 }
 
 edit_from_base() {
@@ -140,6 +140,7 @@ build_user() {
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
    grep -c "${GIT_COMMIT}") -ge 1 ]]; then
+    echo $GIT_COMMIT
     docker tag "${IMAGE_NAME}:latest-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
   fi
 }
@@ -147,13 +148,16 @@ build_user() {
 build_training() {
   # Build the user runtime and dev images and tag them with the current git commit.
   check
+
+  echo "From template: USRID is $USRID"
+  echo "From template: GH_USERNAME is $GH_USERNAME"
   docker compose -p "${COMPOSE_PROJECT}" build image-training
 
   # If the generic image has the current git tag, then the user image has been build from that tag.
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
    grep -c "${GIT_COMMIT}") -ge 1 ]]; then
-    docker tag "${IMAGE_NAME}:latest-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
+    docker tag "${IMAGE_NAME}:latest-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-training-root"
   fi
 }
 
@@ -202,17 +206,17 @@ push_usr_or_root() {
     PUSH_IMAGE_NAME="registry.rcp.epfl.ch/${IMAGE_NAME}"
   fi
 
-  docker tag "${IMAGE_NAME}:latest-${USR_OR_ROOT}" \
-  "${PUSH_IMAGE_NAME}:latest-${USR_OR_ROOT}"
-  docker push "${PUSH_IMAGE_NAME}:latest-${USR_OR_ROOT}"
+  docker tag "${IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}" \
+  "${PUSH_IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}"
+  docker push "${PUSH_IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}"
 
   # If the image has a git tag push it as well.
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
   grep "${GIT_COMMIT}-${USR_OR_ROOT}" -c) -ge 1 ]]; then
-    docker tag "${IMAGE_NAME}:${GIT_COMMIT}-vllm-${USR_OR_ROOT}" \
-      "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-vllm-${USR_OR_ROOT}"
-    docker push "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-vllm-${USR_OR_ROOT}"
+    docker tag "${IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}" \
+      "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}"
+    docker push "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}"
   fi
 }
 

@@ -9,7 +9,30 @@ ARG GENERIC_IMAGE
 # Explicitly create a user for Docker Engine interfaces
 # which do no support selecting the user at runtime; this is the case for Run:ai.
 
-FROM ${GENERIC_IMAGE}:latest-boisson AS training-image
+FROM ${GENERIC_IMAGE}:latest-root AS runtime-training
+
+ARG GH_USERNAME
+ARG GH_TOKEN
+ARG USR
 
 # Add user to sudoer to be able to install apt packages.
-RUN pip install flash-attn --no-build-isolation
+
+RUN pip install transformers --upgrade
+RUN echo "USR is $USR"
+
+WORKDIR /workspace
+
+RUN git clone https://${GH_USERNAME}:${GH_TOKEN}@github.com/OpenMeditron/meditron_protocol.git
+WORKDIR /workspace/meditron_protocol
+RUN git submodule update --init --recursive
+
+WORKDIR /workspace/meditron_protocol/training/dpo
+RUN pip install -e axolotl
+RUN pip install packaging ninja
+
+WORKDIR /workspace/meditron_protocol/training/dpo/axolotl    
+RUN pip install --no-build-isolation -e '.[flash-attn,deepspeed]'
+
+RUN pip install torchvision
+RUN pip install -U triton
+RUN pip install bitsandbytes --upgrade 

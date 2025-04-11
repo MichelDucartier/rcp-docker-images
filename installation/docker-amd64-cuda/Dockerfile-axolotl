@@ -1,0 +1,25 @@
+
+# 3. Stages for setting up the user and the development environment.
+########################################################################
+
+ARG GENERIC_IMAGE
+
+########################################################################
+# Final runtime layer for the user.
+# Explicitly create a user for Docker Engine interfaces
+# which do no support selecting the user at runtime; this is the case for Run:ai.
+
+FROM ${GENERIC_IMAGE}:latest-root AS runtime-user
+
+
+# Default values
+NUM_PROCESSES=2
+
+# Install required dependencies
+RUN pip install transformers --upgrade
+RUN pip install -e axolotl @ git+https://github.com/OpenMeditron/meditron_protocol
+RUN pip3 install packaging ninja
+RUN pip3 install --no-build-isolation -e '.[flash-attn,deepspeed]'
+RUN pip install torchvision
+RUN pip install -U triton
+RUN pip install bitsandbytes --upgrade 
