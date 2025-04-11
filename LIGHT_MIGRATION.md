@@ -75,6 +75,10 @@ runai submit \
 ```
 If you have a bash script to change the job, change the previous `runai submit` command by the new one. If you are on WSL, make sure that you still do `cp ~/.kube/config /mnt/c/Users/<username>/.kube/config` after submitting a job.
 
+> [Note]
+Why do we still use "/mloscratch"?
+Note the line `--pvc light-scratch:/mloscratch`. This line mounts the new light-scratch to the `/mloscratch` folder inside the new running job. Technically we could mount it to any folder that we want (you could for instance use `--pvc light-scratch:/raclette` and you would have to use `/raclette/users` instead of `/mloscratch/users`. If this is too confusing for you, you can replace `/mloscratch` by `/lightscratch` for instance (or anything that you want ! :D)
+
 Now, try to connect to your job:
 ```bash
 runai bash meditron-basic
@@ -84,4 +88,7 @@ Check that you still have access to GPU:
 nvidia-smi
 ```
 
-Lastly, try to connect to the job using VSCode (the procedure is the same as before) 
+Try to connect to the job using VSCode (the procedure is the same as before). Make sure that you attach to `/mloscratch/users/$GASPAR/path/to/my/awesome/folder` instead of `/mloscratch/homes/$GASPAR/path/to/my/awesome/folder`.
+
+Lastly, you need to may set up your GitHub credentials again. See the *GitHub credentials* part in [LIGHT_README.md](LIGHT_README.md)
+
