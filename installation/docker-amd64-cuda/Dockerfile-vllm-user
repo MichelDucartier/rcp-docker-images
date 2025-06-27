@@ -11,7 +11,7 @@ ARG GENERIC_IMAGE
 
 # FROM ${GENERIC_IMAGE}:latest-vllm-root AS runtime-user
 # FROM ${GENERIC_IMAGE}:latest-vllm-miczhang as runtime-user
-FROM registry.rcp.epfl.ch/multimeditron/basic:latest-vllm-miczhang as runtime-user
+FROM registry.rcp.epfl.ch/multimeditron/basic:latest-vllm-sallinen as runtime-user
 
 ARG GRPID
 ARG USRID

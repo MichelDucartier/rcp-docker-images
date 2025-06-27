@@ -130,7 +130,7 @@ COPY dependencies/requirements.txt ${DEPENDENCIES_DIR}/requirements.txt
 ARG PIP_REQS_FILE=/tmp/dependencies/requirements.txt
 COPY --link dependencies/requirements.txt ${PIP_REQS_FILE}
 RUN pip freeze > ${DEPENDENCIES_DIR}/requirements-raw-before-pip-install-r.txt
-RUN pip install -r ${PIP_REQS_FILE}
+RUN MAX_JOBS=24 pip install -r ${PIP_REQS_FILE}
 RUN pip freeze > ${DEPENDENCIES_DIR}/requirements-raw-after-pip-install-r.txt
 
 # Optional optimizations.

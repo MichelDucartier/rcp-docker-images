@@ -121,13 +121,13 @@ build_generic() {
 build_vllm_user() {
   # Build the user runtime and dev images and tag them with the current git commit.
   check
-  docker compose -p "${COMPOSE_PROJECT}" build image-vllm-user
+  docker compose -p "${COMPOSE_PROJECT}" build image-user
 
   # If the generic image has the current git tag, then the user image has been build from that tag.
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
    grep -c "${GIT_COMMIT}") -ge 1 ]]; then
-    docker tag "${IMAGE_NAME}:latest-vllm-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-vllm-${USR}"
+    docker tag "${IMAGE_NAME}:latest-${USR}" "${IMAGE_NAME}:${GIT_COMMIT}-${USR}"
   fi
 }
 
@@ -181,7 +181,7 @@ build_vllm() {
 
   # Tag the images with the current git commit.
   GIT_COMMIT=$(git rev-parse --short HEAD)
-  docker tag "${IMAGE_NAME}:latest-vllm-root" "${IMAGE_NAME}:${GIT_COMMIT}-vllm-root"
+  docker tag "${IMAGE_NAME}:latest-root" "${IMAGE_NAME}:${GIT_COMMIT}-root"
 }
 
 build() {
@@ -206,17 +206,17 @@ push_usr_or_root() {
     PUSH_IMAGE_NAME="registry.rcp.epfl.ch/${IMAGE_NAME}"
   fi
 
-  docker tag "${IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}" \
-  "${PUSH_IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}"
-  docker push "${PUSH_IMAGE_NAME}:latest-dpo-${USR_OR_ROOT}"
+  docker tag "${IMAGE_NAME}:latest-${USR_OR_ROOT}" \
+  "${PUSH_IMAGE_NAME}:latest-${USR_OR_ROOT}"
+  docker push "${PUSH_IMAGE_NAME}:latest-${USR_OR_ROOT}"
 
   # If the image has a git tag push it as well.
   GIT_COMMIT=$(git rev-parse --short HEAD)
   if [[ $(docker images --format '{{.Repository}}:{{.Tag}}' |\
   grep "${GIT_COMMIT}-${USR_OR_ROOT}" -c) -ge 1 ]]; then
-    docker tag "${IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}" \
-      "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}"
-    docker push "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-dpo-${USR_OR_ROOT}"
+    docker tag "${IMAGE_NAME}:${GIT_COMMIT}-${USR_OR_ROOT}" \
+      "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-${USR_OR_ROOT}"
+    docker push "${PUSH_IMAGE_NAME}:${GIT_COMMIT}-${USR_OR_ROOT}"
   fi
 }
 

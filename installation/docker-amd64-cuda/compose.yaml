@@ -42,7 +42,7 @@ services:
   image-user:
     extends:
       service: image-root
-    image: ${IMAGE_NAME}:latest-dpo-${USR}
+    image: ${IMAGE_NAME}:latest-${USR}
     build:
       dockerfile: Dockerfile-user
       target: runtime-user

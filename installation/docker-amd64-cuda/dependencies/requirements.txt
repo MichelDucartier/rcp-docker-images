@@ -3,3 +3,6 @@ einops
 monai
 open_clip_torch
 deepspeed
+transformers>=4.51.0
+trl
+datasets
