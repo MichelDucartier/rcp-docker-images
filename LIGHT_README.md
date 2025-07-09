@@ -182,10 +182,9 @@ From the Kubernetes menu, we can see the IC and the RCP Cluster. We will enter t
 
 ### Windows (WSL connection)
 
-In this section, every command must be executed in a **Windows terminal** (not WSL)
-
 For WSL setup, you will need [kubernetes](https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/) on your Windows host because VSCode is going to look for it on the host (and not in WSL).
 
+In **Windows terminal** (not WSL), run:
 
 ```bash
 curl.exe -LO "https://dl.k8s.io/release/v1.32.0/bin/windows/amd64/kubectl.exe"
@@ -196,7 +195,8 @@ Create a folder `~/.kube` in Windows:
 mkdir ~/.kube/
 ```
 
-Claim a job from WSL and copy the kube configuration file from WSL to Windows
+
+In **WSL**, claim a job and copy the kube configuration file from WSL to Windows
 ```
 runai submit \
   --name meditron-basic \
