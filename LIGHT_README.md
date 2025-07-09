@@ -7,7 +7,7 @@ Please ask Alexandre to add you to the corresponding groups. You can check your 
 ## 2. Setting-up credentials
 
 This part makes sure that you have access to [GitHub](https://github.com), [wandb](https://wandb.ai/) and [huggingface](https://huggingface.co/) from the cluster. If it's not already done, create an account on those platforms!
-
+/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
 To setup the credentials, we must access the scratch in `haas001.rcp.epfl.ch` using ssh. The password is your GASPAR credentials:
 ```bash
 ssh $GASPAR@haas001.rcp.epfl.ch
@@ -16,6 +16,8 @@ ssh $GASPAR@haas001.rcp.epfl.ch
 
 Go in the scratch directory (`/mnt/mlo/scratch`):
 ```bash
+# SSH terminal
+
 cd /mnt/light/scratch/users
 mkdir $GASPAR
 ```
@@ -25,6 +27,8 @@ mkdir $GASPAR
 We will store the API keys within our directory in a folder that only our user will have access to. Both the wandb and Hugging Face API keys will be stored in a .txt file within this protected folder.
 
 ```bash
+# SSH terminal
+
 cd /mnt/light/scratch/users/$GASPAR_USER
 mkdir keys
 cd keys
@@ -41,12 +45,16 @@ To carry out the automatic login to GitHub, we will need to store our git identi
 
 To do this, we will need to set the environment variable `$HOME` to the personal folder we have created and activate the credential helper that will store our access credentials.
 ```bash
+# SSH terminal
+
 export HOME=/mnt/light/scratch/users/$GASPAR_USER
 git config --global credential.helper store
-```
+```/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
 
 Then we will configure our git identification, specifying a username and email address.
 ```bash
+# SSH terminal
+
 git config --global user.name "GITHUB_USERNAME"
 git config --global user.email "MY_NAME@example.com"
 ```
@@ -55,6 +63,8 @@ Create a [Personal access token](https://github.com/settings/tokens). Select `Ge
 
 Finally, we will execute an action that requires our identification on GitHub to enter our access credentials and store them (e.g. Clone a private repository). When prompted for the password, we will enter the Personal Access Token that we created:
 ```bash
+# SSH terminal
+
 git clone https://github.com/OpenMeditron/MultiMeditron.git
 ```
 If you were able to clone the repo, then your setup is correct.
@@ -64,6 +74,8 @@ If you were able to clone the repo, then your setup is correct.
 
 We will store the configurations related to VSCode in a folder in the scratch volume so that we don't have to download them every time we start a new container.
 ```bash
+# SSH terminal
+
 mkdir /mnt/light/scratch/users/$GASPAR_USER/.vscode-server
 ```
 
@@ -76,6 +88,8 @@ The setup below was tested on macOS with Apple Silicon. If you are using a diffe
 1. Install kubectl
 
 ```bash
+# Your terminal (either WSL, Linux or Mac)
+
 curl -LO "https://dl.k8s.io/release/v1.29.6/bin/darwin/arm64/kubectl"
 # Linux: curl -LO "https://dl.k8s.io/release/v1.29.6/bin/linux/amd64/kubectl"
 
@@ -88,6 +102,8 @@ sudo chown root: /usr/local/bin/kubectl
 2. Setup the kube config file: Take our template file [kubeconfig.yaml](https://github.com/epfml/getting-started/blob/main/kubeconfig.yaml) as your config in the home folder ~/.kube/config. Note that the file on your machine has no suffix.
 
 ```bash
+# Your terminal
+
 mkdir ~/.kube/
 curl -o  ~/.kube/config https://raw.githubusercontent.com/epfml/getting-started/main/kubeconfig.yaml
 ```
@@ -95,6 +111,8 @@ curl -o  ~/.kube/config https://raw.githubusercontent.com/epfml/getting-started/
 3. Install the run:ai CLI for RCP (two RCP clusters):
 
 ```bash
+# Your terminal
+
 # Download the CLI from the link shown in the help section.
 # for Linux: replace `darwin` with `linux`
 wget --content-disposition https://rcp-caas-prod.rcp.epfl.ch/cli/darwin
@@ -110,6 +128,8 @@ The RCP is organized into a [3 level hierarchy](https://wiki.rcp.epfl.ch/en/home
 
 
 ```bash
+# Your terminal
+
 runai config cluster rcp-caas
 runai login
 runai list project
@@ -121,6 +141,8 @@ runai config project light-$GASPAR
 Time to test if we can submit a job! This command will allocate 1 GPU from the cluster and "sleep" to infinity (meaning that it will do essentially nothing) 
 
 ```bash
+# Your terminal
+
 runai submit \
   --name meditron-basic \
   --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR\
@@ -147,26 +169,36 @@ Explanation:
 
 We can check the outputs of our container and the status of the job using the following commands respectively.
 ```bash
+# Your terminal
+
 runai logs meditron-basic
 runai describe job meditron-basic
 ```
 
 To end a job, run the command:
 ```bash
+# Your terminal
+
 runai delete job meditron-basic
 ```
 
 You can access your job by doing
 ```bash
+# Your terminal
+
 runai bash meditron-basic
 ```
 You should see a terminal opening. Enter the following command in your new terminal to ensure that you have indeed a GPU: 
 ```bash
+# Job terminal
+
 nvidia-smi
 ```
 
 Once you are done, run the following command to delete the job:
 ```bash
+# Your terminal
+
 runai delete job meditron-basic
 ```
 
@@ -187,17 +219,23 @@ For WSL setup, you will need [kubernetes](https://kubernetes.io/docs/tasks/tools
 In **Windows terminal** (not WSL), run:
 
 ```bash
+# Windows terminal
+
 curl.exe -LO "https://dl.k8s.io/release/v1.32.0/bin/windows/amd64/kubectl.exe"
 ```
 
 Create a folder `~/.kube` in Windows:
 ```bash
+# Windows terminal
+
 mkdir ~/.kube/
 ```
 
 
 In **WSL**, claim a job and copy the kube configuration file from WSL to Windows
 ```
+# WSL terminal
+
 runai submit \
   --name meditron-basic \
   --image registry.rcp.epfl.ch/multimeditron/basic:latest-$GASPAR\
@@ -230,6 +268,8 @@ If you encounter the following error:
 
 Run:
 ```bash
+# WSL terminal
+
 runai login
 cp ~/.kube/config /mnt/c/Users/$WINDOWS_USERNAME/.kube/config
 ```
@@ -239,6 +279,6 @@ And try to attach VSCode again
 * EPFL RCP [Wiki](https://wiki.rcp.epfl.ch/en/home/CaaS)
 * runai submit [Documentation](https://docs.run.ai/v2.9/Researcher/cli-reference/runai-submit/)
 
-# Coming soon
+# Coming soon/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
 
 As LIGHT is becoming a lab, we are currently moving out from MLO (and thus from `mlo-scratch`). Some time in the future, there will be a migration guide to the new light scratch. Stay tuned!
