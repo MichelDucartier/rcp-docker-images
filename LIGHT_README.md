@@ -7,7 +7,6 @@ Please ask Alexandre to add you to the corresponding groups. You can check your 
 ## 2. Setting-up credentials
 
 This part makes sure that you have access to [GitHub](https://github.com), [wandb](https://wandb.ai/) and [huggingface](https://huggingface.co/) from the cluster. If it's not already done, create an account on those platforms!
-/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
 To setup the credentials, we must access the scratch in `haas001.rcp.epfl.ch` using ssh. The password is your GASPAR credentials:
 ```bash
 ssh $GASPAR@haas001.rcp.epfl.ch
@@ -49,7 +48,7 @@ To do this, we will need to set the environment variable `$HOME` to the personal
 
 export HOME=/mnt/light/scratch/users/$GASPAR_USER
 git config --global credential.helper store
-```/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
+```
 
 Then we will configure our git identification, specifying a username and email address.
 ```bash
@@ -279,6 +278,6 @@ And try to attach VSCode again
 * EPFL RCP [Wiki](https://wiki.rcp.epfl.ch/en/home/CaaS)
 * runai submit [Documentation](https://docs.run.ai/v2.9/Researcher/cli-reference/runai-submit/)
 
-# Coming soon/mloscratch/users/merged_mediset/modality_merged/image_cleaned/mammoth_ov_filtered"
+# Coming soon
 
 As LIGHT is becoming a lab, we are currently moving out from MLO (and thus from `mlo-scratch`). Some time in the future, there will be a migration guide to the new light scratch. Stay tuned!
